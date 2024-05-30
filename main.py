@@ -24,11 +24,8 @@ def main():
     
     grid=createGrid(numberRow, numberColumn)
     activeList=[(0,0)]
-
-    displayGrid(grid)
     
     grid[0][0]=images[0]
-    displayGrid(grid)
     images.pop(0)
     
     while activeList:
