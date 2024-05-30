@@ -12,17 +12,6 @@ def getDivisor(n):
             maxDivisor=n//i
         i+=1
     return divisors
-
-def gridToCSV(grid):
-    newGrid=createGrid(len(grid), len(grid[0]))
-    for i in range(len(newGrid)):
-        for j in range(len(newGrid[i])):
-            newGrid[i][j]=grid[i][j][0]
-            
-    with open('plan.csv', 'w') as file:
-        writer=csv.writer(file)
-        for row in newGrid:
-            writer.writerow(row)
     
 def displayGrid(grid):
     print('\n')
@@ -35,3 +24,17 @@ def displayGrid(grid):
 def createGrid(numberRow: int, numberColumn: int):
     grid = [[0 for _ in range(numberColumn)] for _ in range(numberRow)]
     return grid
+
+def gridToCSV(grid):
+    newGrid=createGrid(len(grid), len(grid[0]))
+    for i in range(len(newGrid)):
+        for j in range(len(newGrid[i])):
+            newGrid[i][j]=grid[i][j][0]
+            
+    with open('plan.csv', 'w') as file:
+        for row in newGrid:
+            for element in row:
+                file.write(element)
+                if row[-1]!=element:
+                    file.write(',')
+            file.write('\n')

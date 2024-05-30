@@ -1,6 +1,7 @@
 from other import*
 from dataProcessing import*
 from dataPictureCollector import*
+from csvToImage import*
 
 
 def main():
@@ -41,6 +42,10 @@ def main():
         activeList.pop(0)
     
     gridToCSV(grid)
+    
+    csvToImage('plan.csv', nameFolder)
+    
+    
     
 if __name__ == "__main__":
     main()
