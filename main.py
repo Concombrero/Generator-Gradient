@@ -21,17 +21,26 @@ def main():
     numberColumn=int(numberColumn)
     numberRow=int(numberRow)
     
-    grid=creatorGrid(numberColumn, numberRow)
+    grid=createGrid(numberRow, numberColumn)
     activeList=[(0,0)]
+
+    displayGrid(grid)
     
     grid[0][0]=images[0]
+    displayGrid(grid)
     images.pop(0)
     
     while activeList:
-        
+
         currentCoordonate=activeList[0]
-        currentColumn=currentCoordonate[0]
-        currentRow=currentCoordonate[1]
+        currentRow=currentCoordonate[0]
+        currentColumn=currentCoordonate[1]
+        
+        
         fillAdjacentCell(grid, currentRow, currentColumn, images, activeList)
         activeList.pop(0)
-        
+    
+    gridToCSV(grid)
+    
+if __name__ == "__main__":
+    main()
