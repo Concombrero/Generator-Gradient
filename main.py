@@ -1,7 +1,7 @@
 from other import*
 from dataProcessing import*
 from dataPictureCollector import*
-from csvToImage import*
+from csvTratement import*
 
 
 def main():

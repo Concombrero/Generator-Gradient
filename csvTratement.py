@@ -1,4 +1,5 @@
 from __future__ import annotations
+from other import*
 
 import csv
 import os
@@ -29,4 +30,17 @@ def csvToImage(pathFileCSV, folderImage, nameFinalImage='image.png'):
             img = images[nameImage]
             imageFinal.paste(img, (indexColumn * widthImage, indexRow * heightImage))
     imageFinal.save(nameFinalImage)
+
+def gridToCSV(grid):
+    newGrid=createGrid(len(grid), len(grid[0]))
+    for i in range(len(newGrid)):
+        for j in range(len(newGrid[i])):
+            newGrid[i][j]=grid[i][j]
             
+    with open('plan.csv', 'w') as file:
+        for row in newGrid:
+            for element in row:
+                file.write(element)
+                if row[-1]!=element:
+                    file.write(',')
+            file.write('\n')
