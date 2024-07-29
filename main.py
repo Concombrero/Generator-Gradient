@@ -1,7 +1,7 @@
 from dataPictureCollector import*
 from classification import*
 from triLAB import*
-
+from changeManual import*
 
 def displayList(listStr: list[str]):
     for i in range(1, len(listStr)+1):
@@ -99,6 +99,17 @@ def main():
     gridToImage(grid, nameFolder, nameFinalImage+'.png')
     
     print('L\'opération s\'est déroulé sans soucis majeur. L\'image à bien était créé.')
+    
+    print('\n')
+    change = bool(input('Voulez vous faire des changements (Oui/Non -> 1/0) \n'))
+    
+    if change:
+        manualChange(grid, nameFolder, nameFinalImage)
+    
+    print('Meci d\'utilisé notre générateur de dégradés')
+    
+      
+    
     
     
     
