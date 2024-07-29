@@ -1,6 +1,6 @@
 from dataPictureCollector import*
 from classification import*
-from tri import*
+from triLAB import*
 
 
 def displayList(listStr: list[str]):
@@ -73,7 +73,7 @@ def gridProfilesToGridName(gridProfiles):
     return grid
 
 def main():
-    
+    createDataSet(10,10,100)
     #Ouvrir les dossier
     nameFolder, numberImage, nameFinalImage=openFolder()
     
@@ -87,8 +87,8 @@ def main():
     
     #Classer les images
     print('Etape 2: Clustering des images \n')
-    clusters=clusteringRGB(profiles, numberColumns)
-    
+    clusters=clusteringLAB(profiles, numberColumns)
+        
     #Tier et les images
     print('Etape 3: Trie des cluster et organisation de la sttructure \n')
     grid=organisedGrid(profiles, clusters)
@@ -96,7 +96,6 @@ def main():
     #faire l'image
     print('Etape 4: Création de l\'image  \n')
     grid=gridProfilesToGridName(grid)
-    displayGrid(grid)
     gridToImage(grid, nameFolder, nameFinalImage+'.png')
     
     print('L\'opération s\'est déroulé sans soucis majeur. L\'image à bien était créé.')

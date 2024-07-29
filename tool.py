@@ -7,10 +7,12 @@ import numpy as np
 import random
 from PIL import Image
 
-
 def distanceDatas(data1, data2):
-    return np.sqrt((data1[0]-data2[0])**2+(data1[1]-data2[1])**2+(data1[2]-data2[2])**2)
-
+    distance=0
+    for i in range(len(data1)):
+        distance+=(data1[i]-data2[i])**2
+    return np.sqrt(distance)
+    
 def RGBtoLAB(rgb_color:tuple[int, int, int])->tuple[int, int, int]:
     """Converti un code  RGB en LAB
 

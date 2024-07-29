@@ -9,10 +9,8 @@ def barycentre(data)->np.array:
     Returns:
         np.array: coordonnées du barycentre
     """
-    l = sum(point[0] for point in data) / len(data)
-    a = sum(point[1] for point in data) / len(data)
-    b = sum(point[2] for point in data) / len(data)
-    return np.array([l, a, b])
+    return np.mean(data, axis=0)
+    
 
 def initializeCentroidsRGB(dimension:int , k: int)->list[np.array]:
     """créer une liste de k centroides de dimension donnée
@@ -46,9 +44,7 @@ def initializeCentroidsLAB(dimension:int , k: int)->list[np.array]:
     centroids=[]
     for i in range(k):
         centroid=[]
-        coordonate=random.randint(0, 100)
-        centroid.append(coordonate)
-        for _ in range(dimension-1):
+        for _ in range(dimension):
             coordonate=random.randint(-100, 100)
             centroid.append(coordonate)
         centroids.append(np.array(centroid))
@@ -77,22 +73,23 @@ def assignClusters(data: np.array, centroids: list[np.array]) -> dict:
     
     return clusters
 
-def updateCentroids(clusters: dict, k:int)->list[np.array]:
+def updateCentroids(clusters: dict, k:int, dimension:int)->list[np.array]:
     """Met à jour les centroïdes en calculant le barycentre des points assignés à chaque cluster.
 
     Args:
         clusters (dict): Dictionnaire des clusters avec les indices des centroïdes comme clés et les listes de points comme valeurs.
         k (int): Nombre de centroïdes.
+        dimension (int): Dimention de l'espace
 
     Returns:
         list[np.array]: Tableau des nouvelles coordonnées des centroïdes.
     """
-    centroids=np.zeros((k, 3))
+    centroids=np.zeros((k, dimension))
     for cluster_index, points in clusters.items():
         centroids[cluster_index] = barycentre(points)
     return centroids
 
-def hasConverged(oldCentroids: np.array, newCentroids: np.array, epsilon: float =1e-4)->bool:
+def hasConvergedRGB(oldCentroids: np.array, newCentroids: np.array, epsilon: float =1e-4)->bool:
     """Vérifie si les centroïdes ont convergé en comparant les centroïdes anciens et nouveaux.
 
     Args:
@@ -103,7 +100,21 @@ def hasConverged(oldCentroids: np.array, newCentroids: np.array, epsilon: float 
     Returns:
         bool: True si la convergence est atteinte, sinon False.
     """
-    return sum([distanceDatas(oldCentroids[i], newCentroids[i]) for i in range(len(oldCentroids))])<epsilon    
+    return sum([distanceDatas(oldCentroids[i], newCentroids[i]) for i in range(len(oldCentroids))])<epsilon
+
+
+def hasConvergedLAB(oldCentroids: np.array, newCentroids: np.array, epsilon: float =1e-4)->bool:
+    """Vérifie si les centroïdes ont convergé en comparant les centroïdes anciens et nouveaux.
+
+    Args:
+        oldCentroids (np.array): Tableau des anciennes coordonnées des centroïdes.
+        newCentroids (np.array): Tableau des nouvelles coordonnées des centroïdes.
+        epsilon (float): Seuil de convergence.
+
+    Returns:
+        bool: True si la convergence est atteinte, sinon False.
+    """
+    return sum([distanceDatas(oldCentroids[i], newCentroids[i]) for i in range(len(oldCentroids))])<epsilon
     
 def kclusteringRGB(data: np.array, k: int, maxIteration: int =300)->dict:
     """Applique l'algorithme K-means clustering aux données.
@@ -117,15 +128,15 @@ def kclusteringRGB(data: np.array, k: int, maxIteration: int =300)->dict:
         dict: Dictionnaire des clusters avec les centroïdes comme clés et les listes de points comme valeurs.
     """
     data=np.array(data)
-    
-    centroids=initializeCentroidsRGB(3, k)
+    dimension=len(data[0])
+    centroids=initializeCentroidsRGB(dimension, k)
     newCenroids=np.zeros_like(centroids)
     
     while maxIteration>0:
         clusters = assignClusters(data, centroids)
-        newCenroids=updateCentroids(clusters, k)
+        newCenroids=updateCentroids(clusters, k, dimension)
         
-        if hasConverged(centroids, newCenroids):
+        if hasConvergedRGB(centroids, newCenroids):
             break
         
         centroids=newCenroids
@@ -139,6 +150,7 @@ def kclusteringRGB(data: np.array, k: int, maxIteration: int =300)->dict:
 
     return resultClusters
 
+
 def kclusteringLAB(data: np.array, k: int, maxIteration: int =300)->dict:
     """Applique l'algorithme K-means clustering aux données.
 
@@ -151,15 +163,15 @@ def kclusteringLAB(data: np.array, k: int, maxIteration: int =300)->dict:
         dict: Dictionnaire des clusters avec les centroïdes comme clés et les listes de points comme valeurs.
     """
     data=np.array(data)
-    
-    centroids=initializeCentroidsLAB(3, k)
+    dimension=len(data[0])
+    centroids=initializeCentroidsLAB(dimension, k)
     newCenroids=np.zeros_like(centroids)
     
     while maxIteration>0:
         clusters = assignClusters(data, centroids)
-        newCenroids=updateCentroids(clusters, k)
+        newCenroids=updateCentroids(clusters, k, dimension)
         
-        if hasConverged(centroids, newCenroids):
+        if hasConvergedLAB(centroids, newCenroids):
             break
         
         centroids=newCenroids

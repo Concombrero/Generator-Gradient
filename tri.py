@@ -13,8 +13,8 @@ def closestProfileRGB(initialProfile:dict, profiles:list[dict])->dict:
     closestProfil=None
     minDistance=float('infinity')
     for profile in profiles:
-        if distanceDatas(initialProfile['RGB'], profile['RGB'])<minDistance:
-            minDistance=distanceDatas(initialProfile['RGB'], profile['RGB'])
+        if distanceDatas(initialProfile['LAB'], profile['LAB'])<minDistance:
+            minDistance=distanceDatas(initialProfile['LAB'], profile['LAB'])
             closestProfil=profile
     return closestProfil
 
@@ -46,7 +46,7 @@ def errorList(profiles: list[dict])->float:
     """
     error=0
     for i in range(len(profiles)-1):
-        error+=distanceDatas(profiles[i]['RGB'], profiles[i+1]['RGB'])
+        error+=distanceDatas(profiles[i]['LAB'], profiles[i+1]['LAB'])
     return error
 
 def optimalSort(profiles: list[dict])->list[dict]:
@@ -80,7 +80,7 @@ def sortCentroids(clusters:dict)->list[dict]:
     """
     profiles=[]
     for cluster in clusters:
-        profile={'RGB': tuple(cluster)}
+        profile={'LAB': tuple(cluster)}
         profiles.append(profile)
     sortedCentroids=optimalSort(profiles)
     return sortedCentroids
@@ -93,10 +93,8 @@ def organisedGrid(profiles: list[dict], clusters:dict):
         sortedCentroids (list[dict]): les centroides triée
     """
     sortedCentroids=sortCentroids(clusters)
-    displayGrid(sortedCentroids)
     sortedGrid=[]
     for centroid in sortedCentroids:
-        print(centroid)
-        sortedProfiles=optimalSort([profile for profile in profiles if 'RGB Cluster' in profile and profile['RGB Cluster'] == centroid['RGB']])
+        sortedProfiles=optimalSort([profile for profile in profiles if 'LAB Cluster' in profile and profile['LAB Cluster'] == centroid['LAB']])
         sortedGrid.append(sortedProfiles)
     return sortedGrid
