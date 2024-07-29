@@ -71,7 +71,6 @@ def gridToImage(grid, nameFolderImage:str, nameFinalImage:str)->None:
         pathFinalImage (str): path du dossier ou le fichier sera enregistré  
         nameFinalImage (str): nom de l'image finale
     """
-    displayGrid(grid)
     numberRow = len(grid)
     numberColumn = len(grid[0])
     
